@@ -18,6 +18,7 @@ export default function Payment() {
   const eventId = params.get("event");
   const ticket = (params.get("ticket") as "VIP" | "Regular") ?? "Regular";
   const name = params.get("name") ?? "Guest";
+  const regId = params.get("regId");
 
   const { data: event, isLoading } = useQuery({
     queryKey: ["event", eventId],
@@ -35,7 +36,7 @@ export default function Payment() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await createPayment({ user: name, amount, method, status: "Paid" });
+      await createPayment({ user: name, amount, method, status: "Paid", registrationId: regId ? Number(regId) : undefined });
       setDone(true);
       toast.success("Payment confirmed!");
       setTimeout(() => navigate("/"), 1800);

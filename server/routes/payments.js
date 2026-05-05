@@ -37,24 +37,33 @@ router.get(
 router.post(
   "/",
   asyncHandler(async (req, res) => {
-    const { user, amount, method, status } = req.body;
+    const { user, amount, method, status, registrationId: reqRegId } = req.body;
     if (!user || amount == null || !method) {
       return res.status(400).json({ success: false, error: "user, amount, and method are required" });
     }
 
-    // Find the latest registration for this user to link payment
-    const existingUser = await User.findOne({ where: { name: user } });
-    let registrationId = null;
-    if (existingUser) {
-      const reg = await Registration.findOne({
-        where: { user_id: existingUser.user_id },
-        order: [["registration_id", "DESC"]],
-      });
-      if (reg) registrationId = reg.registration_id;
+    let registrationId = reqRegId || null;
+
+    // If no registrationId was passed, look it up by user name
+    if (!registrationId) {
+      const existingUser = await User.findOne({ where: { name: user } });
+      if (existingUser) {
+        const reg = await Registration.findOne({
+          where: { user_id: existingUser.user_id },
+          order: [["registration_id", "DESC"]],
+        });
+        if (reg) registrationId = reg.registration_id;
+      }
     }
 
     if (!registrationId) {
-      return res.status(400).json({ success: false, error: "No registration found for this user" });
+      return res.status(400).json({ success: false, error: "No registration found for this user. Please register first." });
+    }
+
+    // Check if payment already exists for this registration
+    const existingPayment = await Payment.findOne({ where: { registration_id: registrationId } });
+    if (existingPayment) {
+      return res.status(400).json({ success: false, error: "Payment already exists for this registration" });
     }
 
     const txnId = `TXN${Date.now()}`;

@@ -47,12 +47,17 @@ router.post(
     });
     if (!event) return res.status(404).json({ success: false, error: "Event not found" });
 
-    // Find user by name or use a default user_id
-    let userId = 1;
-    const existingUser = await User.findOne({ where: { name: user } });
-    if (existingUser) {
-      userId = existingUser.user_id;
+    // Find user by name — auto-create if not found
+    let existingUser = await User.findOne({ where: { name: user } });
+    if (!existingUser) {
+      existingUser = await User.create({
+        name: user,
+        email: `${user.toLowerCase().replace(/\s+/g, ".")}@guest.eventflow.app`,
+        password: "guest",
+        role: "attendee",
+      });
     }
+    const userId = existingUser.user_id;
 
     // Calculate amount from ticket price
     const tickets = event.get({ plain: true }).tickets || [];

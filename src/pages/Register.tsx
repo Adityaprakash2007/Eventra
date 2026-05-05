@@ -38,9 +38,9 @@ export default function Register() {
 
     setSubmitting(true);
     try {
-      await createRegistration({ user: name, eventId: Number(eventId), ticket });
+      const reg = await createRegistration({ user: name, eventId: Number(eventId), ticket });
       toast.success("Registration created. Proceed to payment.");
-      navigate(`/payment?event=${eventId}&ticket=${ticket}&name=${encodeURIComponent(name)}`);
+      navigate(`/payment?event=${eventId}&ticket=${ticket}&name=${encodeURIComponent(name)}&regId=${reg.id}`);
     } catch (err: any) {
       toast.error(err.message || "Registration failed");
     } finally {

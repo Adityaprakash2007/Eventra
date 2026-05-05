@@ -1,10 +1,6 @@
-// ── Centralized API client for EventFlow Hub ──────────────────
-// All fetch calls go through here so we have a single place to
-// change the base URL, add auth headers, etc.
-
 const BASE_URL = "/api";
 
-// ── Helper ──────────────────────────────────────────────────
+
 async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE_URL}${endpoint}`, {
     headers: { "Content-Type": "application/json" },
@@ -19,7 +15,7 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-// ── Types (re-exported from mockData for compatibility) ─────
+
 export type Event = {
   id: number;
   title: string;
@@ -28,6 +24,7 @@ export type Event = {
   seats: number;
   price: number;
   image?: string;
+  category?: string;
 };
 
 export type User = {
@@ -66,7 +63,7 @@ export type RegistrationPerEvent = {
   registrations: number;
 };
 
-// ── Events ──────────────────────────────────────────────────
+
 export const fetchEvents = () => request<Event[]>("/events");
 export const fetchEvent = (id: number | string) => request<Event>(`/events/${id}`);
 export const createEvent = (data: Omit<Event, "id">) =>
@@ -76,19 +73,18 @@ export const updateEvent = (id: number | string, data: Partial<Omit<Event, "id">
 export const deleteEvent = (id: number | string) =>
   request<{ success: boolean }>(`/events/${id}`, { method: "DELETE" });
 
-// ── Users ───────────────────────────────────────────────────
 export const fetchUsers = () => request<User[]>("/users");
 
-// ── Registrations ───────────────────────────────────────────
+
 export const fetchRegistrations = () => request<Registration[]>("/registrations");
 export const createRegistration = (data: { user: string; eventId: number | string; ticket: string }) =>
   request<Registration>("/registrations", { method: "POST", body: JSON.stringify(data) });
 
-// ── Payments ────────────────────────────────────────────────
+
 export const fetchPayments = () => request<Payment[]>("/payments");
-export const createPayment = (data: { user: string; amount: number; method: string; status?: string }) =>
+export const createPayment = (data: { user: string; amount: number; method: string; status?: string; registrationId?: number }) =>
   request<Payment>("/payments", { method: "POST", body: JSON.stringify(data) });
 
-// ── Stats ───────────────────────────────────────────────────
+
 export const fetchStats = () => request<Stats>("/stats");
 export const fetchRegistrationsPerEvent = () => request<RegistrationPerEvent[]>("/stats/registrations-per-event");

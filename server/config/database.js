@@ -19,9 +19,8 @@ const sequelize = new Sequelize(
       idle: 10000,
     },
     define: {
-      // Don't add timestamps columns if they don't already exist
+
       timestamps: false,
-      // Use the exact table name (no pluralization)
       freezeTableName: true,
     },
   }

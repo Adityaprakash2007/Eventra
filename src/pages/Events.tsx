@@ -9,6 +9,29 @@ import { CalendarDays, MapPin, Users, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Map event category / title keywords → image
+const categoryImages: Record<string, string> = {
+  Technical: "/events/technical.png",
+  Entertainment: "/events/entertainment.png",
+  Cultural: "/events/cultural.png",
+  General: "/events/general.png",
+};
+
+function getEventImage(event: Event): string {
+  // Check title keywords first for specific matches
+  const t = event.title.toLowerCase();
+  if (t.includes("hack")) return "/events/hackathon.png";
+  if (t.includes("drama") || t.includes("theater") || t.includes("theatre") || t.includes("play")) return "/events/drama.png";
+  if (t.includes("dance")) return "/events/cultural.png";
+  if (t.includes("music") || t.includes("concert")) return "/events/entertainment.png";
+  if (t.includes("tech") || t.includes("code") || t.includes("ai") || t.includes("symposium")) return "/events/technical.png";
+  // Fallback to category
+  if (event.category && categoryImages[event.category]) {
+    return categoryImages[event.category];
+  }
+  return "/events/general.png";
+}
+
 export default function Events() {
   const navigate = useNavigate();
   const { data: events = [], isLoading } = useQuery({ queryKey: ["events"], queryFn: fetchEvents });
@@ -32,11 +55,21 @@ export default function Events() {
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {events.map(e => (
             <Card key={e.id} className="group overflow-hidden border-border/60 shadow-[var(--shadow-card)] transition-all hover:-translate-y-0.5 hover:shadow-elegant">
-              <div className="h-32 bg-gradient-primary relative">
-                <div className="absolute inset-0 bg-black/10" />
-                <Badge className="absolute top-3 right-3 bg-card text-foreground hover:bg-card">
+              <div className="h-40 relative overflow-hidden">
+                <img
+                  src={getEventImage(e)}
+                  alt={e.title}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                <Badge className="absolute top-3 right-3 bg-card text-foreground hover:bg-card shadow-md">
                   ₹{e.price === 0 ? "Free" : e.price}
                 </Badge>
+                {e.category && (
+                  <Badge variant="secondary" className="absolute top-3 left-3 bg-black/50 text-white border-0 backdrop-blur-sm text-[10px]">
+                    {e.category}
+                  </Badge>
+                )}
               </div>
               <CardContent className="p-5">
                 <h3 className="font-semibold text-lg leading-tight">{e.title}</h3>
@@ -56,9 +89,16 @@ export default function Events() {
       )}
 
       <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
-        <DialogContent>
+        <DialogContent className="sm:max-w-lg">
           {selected && (
             <>
+              <div className="rounded-lg overflow-hidden -mx-2 -mt-2 mb-2">
+                <img
+                  src={getEventImage(selected)}
+                  alt={selected.title}
+                  className="w-full h-48 object-cover"
+                />
+              </div>
               <DialogHeader>
                 <DialogTitle>{selected.title}</DialogTitle>
                 <DialogDescription>Full event information</DialogDescription>
