@@ -23,6 +23,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Codebuff workspace metadata
-.freebuff/
+start.sh
+serve_spa.py

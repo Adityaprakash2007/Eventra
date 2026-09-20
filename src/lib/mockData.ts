@@ -27,12 +27,12 @@ export type Payment = {
 export type User = { id: string; name: string; email: string; joined: string };
 
 export const events: Event[] = [
-  { id: "e1", title: "TechSummit 2026", venue: "Bangalore Convention Center", date: "2026-05-12", seats: 240, price: 1499 },
-  { id: "e2", title: "Indie Music Fest", venue: "Mumbai Arena", date: "2026-06-04", seats: 1200, price: 899 },
-  { id: "e3", title: "Designers Meetup", venue: "WeWork, Pune", date: "2026-05-22", seats: 80, price: 499 },
-  { id: "e4", title: "Startup Pitch Night", venue: "T-Hub, Hyderabad", date: "2026-07-09", seats: 150, price: 0 },
-  { id: "e5", title: "AI World Conference", venue: "Delhi Expo Mart", date: "2026-08-18", seats: 600, price: 2499 },
-  { id: "e6", title: "Food & Wine Carnival", venue: "Goa Beachfront", date: "2026-09-02", seats: 450, price: 1299 },
+  { id: "e1", title: "TechSummit 2026", venue: "Bangalore Convention Center", date: "2026-11-12", seats: 240, price: 1499 },
+  { id: "e2", title: "Indie Music Fest", venue: "Mumbai Arena", date: "2026-11-20", seats: 1200, price: 899 },
+  { id: "e3", title: "Designers Meetup", venue: "WeWork, Pune", date: "2026-11-28", seats: 80, price: 499 },
+  { id: "e4", title: "Startup Pitch Night", venue: "T-Hub, Hyderabad", date: "2026-12-05", seats: 150, price: 0 },
+  { id: "e5", title: "AI World Conference", venue: "Delhi Expo Mart", date: "2026-12-14", seats: 600, price: 2499 },
+  { id: "e6", title: "Food & Wine Carnival", venue: "Goa Beachfront", date: "2026-12-22", seats: 450, price: 1299 },
 ];
 
 export const users: User[] = [
