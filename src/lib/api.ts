@@ -83,12 +83,16 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
       ...options,
     });
 
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
+    const contentType = res.headers.get("content-type") || "";
+    if (!res.ok || !contentType.includes("application/json")) {
+      const body = contentType.includes("application/json")
+        ? await res.json().catch(() => ({}))
+        : {};
       throw new Error(body.error || `Request failed with status ${res.status}`);
     }
 
-    return res.json() as Promise<T>;
+    const data = await res.json();
+    return data as T;
   } catch (err) {
     // No backend reachable — fall back to mock data/writes so the preview
     // still works. Real deployments with a live API will never hit this.
