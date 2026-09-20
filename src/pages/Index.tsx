@@ -4,6 +4,9 @@ import { fetchStats, fetchRegistrationsPerEvent } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { Users, CalendarDays, Ticket, IndianRupee, TrendingUp, Loader2 } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 const tones = [
   "from-indigo-500 to-violet-500",
@@ -15,6 +18,19 @@ const icons = [Users, CalendarDays, Ticket, IndianRupee];
 const labels = ["Total Users", "Total Events", "Total Registrations", "Total Revenue"];
 
 const Index = () => {
+  const [params, setParams] = useSearchParams();
+
+  useEffect(() => {
+    if (params.get("payment") === "success") {
+      const tx = params.get("tx");
+      toast.success(
+        tx ? `🎉 Payment Confirmed via Razorpay! ID: ${tx}` : "🎉 Payment Confirmed!"
+      );
+      // Clean up search params after toast
+      setParams({}, { replace: true });
+    }
+  }, [params, setParams]);
+
   const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ["stats"],
     queryFn: fetchStats,

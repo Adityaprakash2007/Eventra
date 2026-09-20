@@ -47,7 +47,7 @@ export type Payment = {
   id: number;
   user: string;
   amount: number;
-  method: "UPI" | "Card";
+  method: "UPI" | "Card" | "Razorpay";
   status: "Paid" | "Pending";
 };
 

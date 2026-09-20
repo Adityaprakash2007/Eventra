@@ -10,6 +10,7 @@ import usersRouter from "./routes/users.js";
 import registrationsRouter from "./routes/registrations.js";
 import paymentsRouter from "./routes/payments.js";
 import statsRouter from "./routes/stats.js";
+import authRouter from "./routes/auth.js";
 
 // ── Config ──────────────────────────────────────────────────
 dotenv.config();
@@ -22,6 +23,7 @@ app.use(cors({ origin: ["http://localhost:8080", "http://localhost:5173"], crede
 app.use(express.json());
 
 // ── Routes ──────────────────────────────────────────────────
+app.use("/api/auth", authRouter);
 app.use("/api/events", eventsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/registrations", registrationsRouter);
