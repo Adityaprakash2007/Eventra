@@ -25,3 +25,6 @@ dist-ssr
 *.sw?
 start.sh
 serve_spa.py
+
+# Freebuff workspace agent files (run docs, logs, tooling)
+.freebuff/
