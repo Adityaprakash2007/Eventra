@@ -22,7 +22,7 @@ import {
   Clock,
 } from "lucide-react";
 import { createPayment, fetchEvent } from "@/lib/api";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 type RazorpayTab = "upi" | "card" | "netbanking" | "wallet";
@@ -30,6 +30,7 @@ type RazorpayTab = "upi" | "card" | "netbanking" | "wallet";
 export default function RazorpayCheckout() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const eventId = params.get("event");
   const ticket = (params.get("ticket") as "VIP" | "Regular") ?? "Regular";
@@ -126,6 +127,8 @@ export default function RazorpayCheckout() {
         status: "Paid",
         registrationId: regId ? Number(regId) : undefined,
       });
+      void queryClient.invalidateQueries({ queryKey: ["stats"] });
+      void queryClient.invalidateQueries({ queryKey: ["payments"] });
 
       setIsProcessing(false);
       setPaymentSuccess(true);
@@ -134,9 +137,9 @@ export default function RazorpayCheckout() {
       setTimeout(() => {
         navigate(`/?payment=success&tx=${generatedTxId}&event=${eventId || ""}`);
       }, 2000);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setIsProcessing(false);
-      toast.error(err.message || "Failed to record payment in database");
+      toast.error(err instanceof Error ? err.message : "Failed to record payment in database");
     }
   };
 

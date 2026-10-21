@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { Eye, EyeOff, Zap, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Zap, Loader2, Chrome, Github, Linkedin } from "lucide-react";
+
+const socialButtons = [
+  { icon: Chrome, label: "Google" },
+  { icon: Github, label: "GitHub" },
+  { icon: Linkedin, label: "LinkedIn" },
+];
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { authedLogin } = useAuth();
   const [searchParams] = useSearchParams();
   const justRegistered = searchParams.get("registered") === "1";
+  const sessionExpired = searchParams.get("expired") === "1";
 
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPw, setShowPw] = useState(false);
@@ -38,10 +45,12 @@ export default function Login() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Login failed");
-      login(data);
-      navigate("/");
-    } catch (err: any) {
-      setError(err.message);
+      // data = { id, name, email, role, token } — the JWT is persisted and sent
+      // automatically as a Bearer header on every API call (src/lib/api.ts).
+      authedLogin(data);
+      navigate(data.role === "admin" ? "/admin" : "/");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Login failed");
     } finally {
       setLoading(false);
     }
@@ -60,7 +69,7 @@ export default function Login() {
           <div className="auth-logo-icon">
             <Zap size={22} />
           </div>
-          <span className="auth-logo-text">EventFlow</span>
+          <span className="auth-logo-text">Eventra</span>
         </div>
 
         <h1 className="auth-title">Welcome back</h1>
@@ -68,6 +77,10 @@ export default function Login() {
 
         {justRegistered && (
           <p className="auth-success">✅ Account created! Please sign in.</p>
+        )}
+
+        {sessionExpired && (
+          <p className="auth-success">⏳ Your session expired — please sign in again.</p>
         )}
 
         <form onSubmit={handleSubmit} className="auth-form">
@@ -87,7 +100,16 @@ export default function Login() {
           </div>
 
           <div className="auth-field">
-            <label htmlFor="login-password" className="auth-label">Password</label>
+            <div className="flex items-center justify-between">
+              <label htmlFor="login-password" className="auth-label">Password</label>
+              <button
+                type="button"
+                className="auth-link text-[11px] font-medium"
+                onClick={() => setError("Password reset is coming soon — contact support@eventra.app in the meantime.")}
+              >
+                Forgot password?
+              </button>
+            </div>
             <div className="auth-input-wrapper">
               <input
                 id="login-password"
@@ -117,6 +139,29 @@ export default function Login() {
             {loading ? <Loader2 size={18} className="auth-spinner" /> : "Sign In"}
           </button>
         </form>
+
+        {/* Social login placeholders */}
+        <div className="mt-5">
+          <div className="flex items-center gap-3">
+            <span className="h-px flex-1 bg-white/10" />
+            <span className="text-[11px] uppercase tracking-wider text-slate-500">or continue with</span>
+            <span className="h-px flex-1 bg-white/10" />
+          </div>
+          <div className="mt-3 grid grid-cols-3 gap-2">
+            {socialButtons.map((s) => (
+              <button
+                key={s.label}
+                type="button"
+                title={`${s.label} sign-in (coming soon)`}
+                onClick={() => setError(`${s.label} sign-in is coming soon. Use your email for now.`)}
+                className="flex items-center justify-center gap-1.5 rounded-lg border border-slate-700/60 bg-slate-800/40 py-2 text-xs font-medium text-slate-300 transition-all hover:border-slate-500 hover:text-white"
+              >
+                <s.icon size={14} />
+                <span className="hidden sm:inline">{s.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
 
         <p className="auth-switch">
           Don't have an account?{" "}

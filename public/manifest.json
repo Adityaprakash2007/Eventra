@@ -1,0 +1,17 @@
+{
+  "name": "Eventra — Event Registration & Ticketing",
+  "short_name": "Eventra",
+  "description": "Discover events, register in seconds, and pay securely with Eventra.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Eventra — Project Report</title>
+  <style>
+
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <style type="text/css">
+@page {
+size: A4;
+margin: 16mm 15mm 18mm;
+}
+* { box-sizing: border-box; }
+html {
+-webkit-print-color-adjust: exact;
+print-color-adjust: exact;
+}
+body {
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+font-size: 10.5pt;
+line-height: 1.55;
+color: #1e2233;
+margin: 0;
+}
+header#title-block-header h1.title {
+font-size: 24pt;
+line-height: 1.2;
+margin: 0 0 6pt;
+padding-bottom: 10pt;
+border-bottom: 3px solid #6366f1;
+color: #111;
+}
+h1 {
+font-size: 16pt;
+color: #312e81;
+margin: 20pt 0 8pt;
+padding-bottom: 4pt;
+border-bottom: 1px solid #d9dcf0;
+page-break-after: avoid;
+break-after: avoid;
+}
+h2 {
+font-size: 13pt;
+color: #4338ca;
+margin: 16pt 0 6pt;
+page-break-after: avoid;
+break-after: avoid;
+}
+h3 {
+font-size: 11.5pt;
+color: #1f2937;
+margin: 12pt 0 4pt;
+page-break-after: avoid;
+break-after: avoid;
+}
+p { margin: 5pt 0; }
+strong { color: #0f172a; }
+a { color: #4f46e5; text-decoration: none; }
+ul, ol { margin: 5pt 0 8pt; padding-left: 18pt; }
+li { margin: 2.5pt 0; }
+code {
+font-family: "SF Mono", Menlo, Consolas, monospace;
+font-size: 8.6pt;
+background: #f1f2fb;
+border: 1px solid #e4e6f5;
+border-radius: 3px;
+padding: 0.5pt 3pt;
+color: #4338ca;
+}
+pre {
+background: #f6f7fd;
+border: 1px solid #e4e6f5;
+border-left: 3px solid #6366f1;
+border-radius: 5px;
+padding: 7pt 9pt;
+overflow-x: hidden;
+white-space: pre-wrap;
+word-wrap: break-word;
+page-break-inside: avoid;
+break-inside: avoid;
+margin: 7pt 0;
+}
+pre code {
+background: none;
+border: none;
+padding: 0;
+color: #334155;
+font-size: 8.4pt;
+}
+table {
+width: 100%;
+border-collapse: collapse;
+font-size: 9.2pt;
+margin: 8pt 0 10pt;
+page-break-inside: avoid;
+break-inside: avoid;
+}
+th {
+background: #eef0fb;
+color: #312e81;
+text-align: left;
+font-weight: 600;
+}
+th, td {
+border: 1px solid #d9dcf0;
+padding: 4pt 7pt;
+vertical-align: top;
+}
+tbody tr:nth-child(even) td { background: #fafbff; }
+blockquote {
+margin: 8pt 0;
+padding: 7pt 11pt;
+border-left: 3px solid #f59e0b;
+background: #fffbeb;
+border-radius: 0 5px 5px 0;
+color: #713f12;
+}
+blockquote p { margin: 2pt 0; }
+hr {
+border: none;
+border-top: 1px solid #d9dcf0;
+margin: 14pt 0;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Eventra — Project Report</h1>
+</header>
+<h1 id="eventra-project-report">Eventra — Project Report</h1>
+<p><strong>Project:</strong> Eventra — Event Registration &amp;
+Ticketing Platform <strong>Report date:</strong> September 24, 2026
+<strong>Report scope:</strong> Whole project — architecture, feature
+inventory, data layer, verification status, and open items.
+<strong>Repository:</strong> <code>eventflow-hub-main</code> (Vite +
+React frontend, Express/Sequelize API, MySQL)</p>
+<hr />
+<h2 id="executive-summary">1. Executive summary</h2>
+<p>Eventra is a full-stack event discovery, registration and ticketing
+application for the Indian market. A visitor picks a <strong>state and
+city</strong>, sees only events in that location, filters and sorts
+them, registers for a seat, and pays through a mock Razorpay checkout
+that issues a printable e-ticket. An admin area exposes users, events,
+registrations and payments with search, CSV export and bulk delete.</p>
+<p>The project is <strong>feature-complete for a demo/portfolio
+deployment</strong> and runs in two modes:</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Requirements</th>
+<th>What it demonstrates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Static demo</strong> (<code>preview.html</code>)</td>
+<td>None — no Node, no DB</td>
+<td>The entire app with 313 generated events served by an in-page
+<code>fetch</code> shim</td>
+</tr>
+<tr>
+<td><strong>Real stack</strong> (<code>npm run dev:all</code>)</td>
+<td>Node + MySQL</td>
+<td>The same app against Sequelize models and the Express API</td>
+</tr>
+</tbody>
+</table>
+<p>As of this report, the <strong>static demo runs live</strong> and
+every code-level check passes: TypeScript 0 errors, unit tests green,
+production build succeeds, and the location → events flow was driven
+end-to-end in a real browser.</p>
+<hr />
+<h2 id="project-overview">2. Project overview</h2>
+<p><strong>Problem it solves.</strong> Generic event listings show
+everything at once, which is useless when events are geographically
+specific. Eventra inverts the flow: location is chosen
+<strong>before</strong> any events render, so every listing the user
+sees is relevant by construction.</p>
+<p><strong>Primary user journeys</strong></p>
+<ol type="1">
+<li><strong>Discover</strong> — pick state → city → browse events in
+that city, filter by category, sort by date, search by title or
+venue.</li>
+<li><strong>Register</strong> — 3-step stepper (details → ticket type →
+review) with live seat-availability feedback.</li>
+<li><strong>Pay</strong> — mock Razorpay checkout, animated success
+screen, printable e-ticket with a barcode strip.</li>
+<li><strong>Administer</strong> — CRUD events (with State/City pickers),
+inspect users/registrations/payments, export CSV, bulk delete.</li>
+</ol>
+<hr />
+<h2 id="technology-stack">3. Technology stack</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Technology</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UI framework</td>
+<td>React 18 + TypeScript, Vite</td>
+</tr>
+<tr>
+<td>Routing</td>
+<td>React Router (hash-based in static builds)</td>
+</tr>
+<tr>
+<td>Styling</td>
+<td>Tailwind CSS + shadcn/ui primitives (60 components), custom design
+tokens</td>
+</tr>
+<tr>
+<td>Animation</td>
+<td>Framer Motion, CSS 3D keyframes (intro corridor, jelly hero)</td>
+</tr>
+<tr>
+<td>Data fetching / cache</td>
+<td>TanStack React Query</td>
+</tr>
+<tr>
+<td>Charts</td>
+<td>Recharts</td>
+</tr>
+<tr>
+<td>Forms &amp; validation</td>
+<td>React Hook Form + Zod</td>
+</tr>
+<tr>
+<td>API</td>
+<td>Node.js + Express 4</td>
+</tr>
+<tr>
+<td>ORM / database</td>
+<td>Sequelize → MySQL</td>
+</tr>
+<tr>
+<td>Tests</td>
+<td>Vitest + <span class="citation" data-cites="testing-library">@testing-library</span></td>
+</tr>
+<tr>
+<td>Build tooling</td>
+<td>Vite (bundle), pandoc + headless Chrome (this report), custom
+preview builders</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Code size</strong> (excluding the shadcn/ui primitive
+library):</p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Lines</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pages (<code>src/pages</code>, 9 pages)</td>
+<td>3,010</td>
+</tr>
+<tr>
+<td>App components (<code>src/components</code>)</td>
+<td>1,532</td>
+</tr>
+<tr>
+<td>lib / hooks / utils</td>
+<td>445</td>
+</tr>
+<tr>
+<td>Server (<code>server/</code>, 16 files)</td>
+<td>983</td>
+</tr>
+<tr>
+<td>Build &amp; data scripts (<code>scripts/</code>)</td>
+<td>769</td>
+</tr>
+<tr>
+<td>Tests</td>
+<td>62</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>~7,100</strong></td>
+</tr>
+<tr>
+<td>UI primitives (<code>src/components/ui</code>, vendored)</td>
+<td>4,596</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="architecture">4. Architecture</h2>
+<h3 id="frontend">4.1 Frontend</h3>
+<pre><code>src/
+  pages/         Dashboard, Events, Register, Payment, RazorpayCheckout,
+                 Admin, Login, Signup, NotFound
+  components/     Layout, LocationGate, IntroScreen, Footer, UserMenu,
+                  NotificationCenter, AnimatedNumber, Breadcrumbs,
+                  EmptyState, PageTransition, Reveal, Skeletons
+  components/ui/  shadcn/ui primitives + hero templates
+  lib/            api.ts (typed API client), location.ts (states/cities +
+                  geolocation), utils.ts
+  hooks/          usePageTitle</code></pre>
+<ul>
+<li><strong><code>src/lib/api.ts</code></strong> is the single typed
+gateway to the API (<code>Event</code>, <code>User</code>,
+<code>Registration</code>, <code>Payment</code>, <code>Stats</code>
+types plus <code>fetchEvents/fetchEvent/createEvent/...</code>).</li>
+<li><strong><code>src/components/LocationGate.tsx</code></strong> owns
+the blocking location dialog (state → city → <em>Show Events</em>, “Use
+my current location”, loading and error states).</li>
+<li><strong><code>src/lib/location.ts</code></strong> fetches
+states/cities from the keyless <code>countriesnow.space</code> API with
+a 24-hour <code>localStorage</code> cache, falls back to the bundled
+<code>public/data/states-cities.json</code>, and reverse-geocodes
+coordinates via OpenStreetMap Nominatim.</li>
+</ul>
+<h3 id="backend">4.2 Backend</h3>
+<pre><code>server/
+  index.js              Express app, CORS, route mounting, boot-time seed
+  config/database.js    Sequelize connection (.env credentials)
+  models/               User, Event, Ticket, Registration, Payment (+ index)
+  routes/               auth, events, users, registrations, payments, stats
+  middleware/           errorHandler (asyncHandler + central error response)
+  seedLocations.js      Auto-migration + idempotent event seeding</code></pre>
+<h3 id="data-model">4.3 Data model</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Table</th>
+<th>Key columns</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>user</code></td>
+<td><code>user_id</code>, name, email, password, role</td>
+<td>auth + admin flag</td>
+</tr>
+<tr>
+<td><code>event</code></td>
+<td><code>event_id</code>, title, venue, <strong>state</strong>,
+<strong>city</strong>, description, category, capacity, status,
+organizer_id, start_date, end_date</td>
+<td><code>state</code>/<code>city</code> added for the location flow;
+auto-migrated on boot</td>
+</tr>
+<tr>
+<td><code>ticket</code></td>
+<td>composite PK (<code>ticket_id</code>, <code>event_id</code>), type,
+price, quantity_available</td>
+<td>one “Regular” ticket per seeded event</td>
+</tr>
+<tr>
+<td><code>registration</code></td>
+<td>registration id, user, event, ticket type, status</td>
+<td>Confirmed / Pending</td>
+</tr>
+<tr>
+<td><code>payment</code></td>
+<td>payment id, user, amount, method, status</td>
+<td>UPI / Card / Razorpay</td>
+</tr>
+</tbody>
+</table>
+<h3 id="api-surface">4.4 API surface</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td><code>/api/auth/login</code>, <code>/api/auth/signup</code></td>
+<td>Authentication</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/events</code></td>
+<td>List events — filters <code>?state=&amp;city=&amp;category=</code>
+(case-insensitive)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/events/locations</code></td>
+<td>Distinct state → cities that actually have events</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/events/:id</code></td>
+<td>Single event</td>
+</tr>
+<tr>
+<td>POST / PUT / DELETE</td>
+<td><code>/api/events</code>, <code>/api/events/:id</code></td>
+<td>Event CRUD (accepts <code>state</code>, <code>city</code>)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/users</code>, <code>/api/users/:id</code></td>
+<td>Users</td>
+</tr>
+<tr>
+<td>GET / POST</td>
+<td><code>/api/registrations</code></td>
+<td>Registrations</td>
+</tr>
+<tr>
+<td>GET / POST</td>
+<td><code>/api/payments</code></td>
+<td>Payments</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/stats</code>,
+<code>/api/stats/registrations-per-event</code></td>
+<td>Dashboard metrics</td>
+</tr>
+</tbody>
+</table>
+<p>Unknown <code>/api/*</code> paths return a JSON 404 rather than
+falling through to the SPA.</p>
+<hr />
+<h2 id="location-first-flow-core-differentiator">5. Location-first flow
+(core differentiator)</h2>
+<ol type="1">
+<li>Opening <code>/events</code> with no saved location shows a
+<strong>blocking “Select your location”</strong> dialog.</li>
+<li><strong>Step 1 — State:</strong> a dropdown of all 32
+states/UTs.</li>
+<li><strong>Step 2 — City:</strong> enabled only after a state is
+chosen; shows a “Loading cities…” indicator while the list
+resolves.</li>
+<li><strong>Step 3 — Show Events:</strong> persists the choice to
+<code>localStorage</code> (<code>eventra-location</code>) and renders
+only events matching that <strong>state AND city</strong>
+(case-insensitive, filtered server-side).</li>
+<li>The page header reads <strong>“Events in Chennai, Tamil
+Nadu”</strong> with a <strong>Change Location</strong> button that
+clears the saved value and reopens the dialog at step 1.</li>
+<li>Returning visitors skip the dialog entirely; a city with no events
+shows a friendly empty state plus clickable shortcuts to sibling cities
+in the same state that <em>do</em> have events.</li>
+<li><strong>Optional bonus:</strong> “Use my current location” uses the
+browser Geolocation API plus Nominatim reverse geocoding, with alias
+mapping (Bangalore → Bengaluru); on denial or failure it falls back to
+the manual dropdowns.</li>
+</ol>
+<hr />
+<h2 id="demo-dataset-generated">6. Demo dataset (generated)</h2>
+<p>The dataset is produced by a seeded generator so the output is
+byte-identical on every run, and lives in <strong>one clearly named
+file</strong> (<code>public/data/events.json</code>) so it can be
+swapped for real database content later.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run events:generate   <span class="co"># scripts/generateEvents.cjs  → public/data/events.json</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run events:validate   <span class="co"># scripts/validateEvents.cjs  → coverage report</span></span></code></pre></div>
+<h3 id="coverage">6.1 Coverage</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Events</td>
+<td><strong>313</strong></td>
+</tr>
+<tr>
+<td>Cities covered</td>
+<td><strong>157 / 157</strong> (100%)</td>
+</tr>
+<tr>
+<td>States / UTs</td>
+<td>32</td>
+</tr>
+<tr>
+<td>Tier-1 metro events</td>
+<td>120</td>
+</tr>
+<tr>
+<td>Date range</td>
+<td>2026-09-30 → 2027-01-23 (~4 months)</td>
+</tr>
+<tr>
+<td>Free events</td>
+<td>71</td>
+</tr>
+<tr>
+<td>Paid events</td>
+<td>242</td>
+</tr>
+<tr>
+<td>Events per city</td>
+<td>min 1, max 7</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tier-1-metros-57-events-each">6.2 Tier-1 metros (5–7 events
+each)</h3>
+<table>
+<thead>
+<tr>
+<th>City</th>
+<th>Events</th>
+<th>City</th>
+<th>Events</th>
+<th>City</th>
+<th>Events</th>
+<th>City</th>
+<th>Events</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mumbai</td>
+<td>6</td>
+<td>New Delhi</td>
+<td>5</td>
+<td>Bengaluru</td>
+<td>6</td>
+<td>Hyderabad</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Chennai</td>
+<td>6</td>
+<td>Kolkata</td>
+<td>5</td>
+<td>Pune</td>
+<td>6</td>
+<td>Ahmedabad</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Surat</td>
+<td>7</td>
+<td>Jaipur</td>
+<td>5</td>
+<td>Lucknow</td>
+<td>7</td>
+<td>Kanpur</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Nagpur</td>
+<td>5</td>
+<td>Indore</td>
+<td>5</td>
+<td>Bhopal</td>
+<td>5</td>
+<td>Visakhapatnam</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Patna</td>
+<td>7</td>
+<td>Vadodara</td>
+<td>7</td>
+<td>Coimbatore</td>
+<td>6</td>
+<td>Kochi</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+<p>Every Tier-1 city carries <strong>at least 4 distinct
+categories</strong>; every other city in the dropdown gets <strong>1–2
+events</strong>, so no city can render an empty list.</p>
+<h3 id="category-spread">6.3 Category spread</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Count</th>
+<th>Category</th>
+<th>Count</th>
+<th>Category</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Music</td>
+<td>36</td>
+<td>Art and Culture</td>
+<td>35</td>
+<td>Business and Networking</td>
+<td>33</td>
+</tr>
+<tr>
+<td>Fitness</td>
+<td>31</td>
+<td>Charity</td>
+<td>29</td>
+<td>Education</td>
+<td>27</td>
+</tr>
+<tr>
+<td>Workshop</td>
+<td>27</td>
+<td>Food Festival</td>
+<td>26</td>
+<td>Sports</td>
+<td>25</td>
+</tr>
+<tr>
+<td>Tech and Startup</td>
+<td>24</td>
+<td>Comedy</td>
+<td>20</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="realism-rules">6.4 Realism rules</h3>
+<ul>
+<li><strong>Venue names scale with the city</strong> — metros get
+convention centres, stadiums and arenas; smaller cities get town halls,
+college grounds and community halls.</li>
+<li><strong>Titles are unique</strong> — each is city-flavoured (“Sufi
+Nights: Chennai”, “Erode Theatre Night”) with a dedupe pass guaranteeing
+no repeats.</li>
+<li><strong>Dates mix weekdays and weekends</strong> and always fall in
+the future relative to the generation anchor.</li>
+<li><strong>Prices tier by city size</strong> — free entry for ~25% of
+events, ₹50–₹500 in smaller cities, up to ₹1,500 in metros.</li>
+<li><strong>Every event carries</strong>
+<code>id, title, category, description, date, time, venue, city, state, price, totalSeats, seats, image</code>.</li>
+</ul>
+<h3 id="validation-rules-enforced">6.5 Validation rules enforced</h3>
+<p><code>scripts/validateEvents.cjs</code> fails the build (exit code 1)
+if any of these break:</p>
+<ol type="1">
+<li>any city in <code>states-cities.json</code> has zero events;</li>
+<li>any Tier-1 metro falls outside 5–7 events, or has fewer than 4
+categories;</li>
+<li>any event id is duplicated;</li>
+<li>any required field is missing, or
+<code>seats &gt; totalSeats</code>;</li>
+<li>any event date is not in the future.</li>
+</ol>
+<p>Latest run: <strong>all checks passed</strong> — 313 events, 157
+cities, 120 Tier-1 events, 32 states, 20 Tier-1 metros, 0 warnings.</p>
+<hr />
+<h2 id="build-tooling-pipeline">7. Build &amp; tooling pipeline</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Script</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scripts/generateEvents.cjs</code></td>
+<td>Seeded generator (mulberry32, seed <code>20260924</code>) reading
+<code>states-cities.json</code></td>
+</tr>
+<tr>
+<td><code>scripts/validateEvents.cjs</code></td>
+<td>Coverage / tier / id / date validation with a printed summary</td>
+</tr>
+<tr>
+<td><code>scripts/build-preview.cjs</code></td>
+<td>Builds the self-contained <code>preview.html</code>: inlines the
+production bundle, CSS, images and a stateful mock API shim</td>
+</tr>
+<tr>
+<td><code>scripts/serve-preview.cjs</code></td>
+<td>Zero-dependency static server for the demo (port 3000, no-cache
+headers, <code>/api/health</code>)</td>
+</tr>
+<tr>
+<td><code>scripts/report.css</code></td>
+<td>Print stylesheet for PDF reports (this document)</td>
+</tr>
+</tbody>
+</table>
+<p>The preview shim serves <code>/api/events</code> with
+<code>state</code>/<code>city</code>/<code>category</code> filtering,
+<code>/api/events/locations</code>, the states-cities fallback and
+stateful payment/registration mutations, so the demo behaves like the
+real backend without a database.</p>
+<hr />
+<h2 id="verification-status">8. Verification status</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Check</th>
+<th>Command</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TypeScript</td>
+<td><code>tsc --noEmit -p tsconfig.app.json</code></td>
+<td>✅ 0 errors</td>
+</tr>
+<tr>
+<td>Unit tests</td>
+<td><code>vitest run</code></td>
+<td>✅ 4/4 passed (<code>src/lib/location.test.ts</code>)</td>
+</tr>
+<tr>
+<td>Production build</td>
+<td><code>vite build</code></td>
+<td>✅ succeeds</td>
+</tr>
+<tr>
+<td>Dataset validation</td>
+<td><code>node scripts/validateEvents.cjs</code></td>
+<td>✅ all checks passed</td>
+</tr>
+<tr>
+<td>Live browser — Tier-1 city</td>
+<td><code>/events</code> → Chennai, Tamil Nadu</td>
+<td>✅ “6 events in Chennai, Tamil Nadu”</td>
+</tr>
+<tr>
+<td>Live browser — Tier-2 city</td>
+<td><code>/events</code> → Erode, Tamil Nadu</td>
+<td>✅ “1 event in Erode, Tamil Nadu”</td>
+</tr>
+<tr>
+<td>Live browser — category filter</td>
+<td>“Music” pill in Chennai</td>
+<td>✅ narrows 6 → 1 event</td>
+</tr>
+<tr>
+<td>Live browser — date sort</td>
+<td>soonest / latest toggle</td>
+<td>✅ 2 Oct 2026 → 11 Jan 2027, reverses correctly</td>
+</tr>
+<tr>
+<td>Live browser — empty city</td>
+<td>Coimbatore before seeding</td>
+<td>✅ friendly message + sibling-city shortcuts</td>
+</tr>
+<tr>
+<td>Dashboard wiring</td>
+<td><code>/</code> stat cards</td>
+<td>✅ “313 events live”</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Defects found and fixed during this cycle</strong></p>
+<ol type="1">
+<li><code>events.json</code> category filtering was missing from the
+preview shim (returned all city events) — added.</li>
+<li>Generated images (<code>/events/*.png</code>) failed to resolve
+through React’s <code>img.src</code> assignment — added a
+property-setter hook alongside the <code>setAttribute</code> hook.</li>
+<li>The <code>fetchEvents</code> signature change broke React Query type
+inference in three pages (<code>Admin</code>, <code>Index</code>,
+<code>Register</code>) — wrapped call sites in
+<code>() =&gt; fetchEvents()</code>.</li>
+<li>The MySQL seeder created tickets without the composite primary key —
+restored explicit <code>ticket_id</code>/<code>event_id</code>.</li>
+</ol>
+<hr />
+<h2 id="how-to-run">9. How to run</h2>
+<h3 id="demo-no-database">Demo (no database)</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># regenerate + verify data (optional)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run events:generate</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run events:validate</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># build and serve the static demo</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">node</span> scripts/build-preview.cjs</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">node</span> scripts/serve-preview.cjs        <span class="co"># http://localhost:3000</span></span></code></pre></div>
+<h3 id="full-stack-requires-mysql">Full stack (requires MySQL)</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run dev:all        <span class="co"># Vite on :3000 + Express API on :5000</span></span></code></pre></div>
+<p>On first boot the server auto-migrates the <code>event</code> table
+(adds <code>state</code>/<code>city</code>) and idempotently seeds all
+313 events with tickets.</p>
+<hr />
+<h2 id="known-limitations-environment-notes">10. Known limitations &amp;
+environment notes</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Item</th>
+<th>Detail</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MySQL credentials</td>
+<td>The <code>.env</code> password is rejected
+(<code>Access denied for &#39;root&#39;</code>), so the DB-backed stack cannot
+boot as configured.</td>
+<td>Blocking for the real-stack mode; fix <code>DB_PASS</code> to
+resolve.</td>
+</tr>
+<tr>
+<td>Port 5000</td>
+<td>macOS AirPlay/ControlCenter occupies port 5000 on this machine.</td>
+<td>Run the API on 5001:
+<code>PORT=5001 API_PORT=5001 npm run dev:all</code> (the Vite proxy
+reads <code>API_PROXY_TARGET</code>).</td>
+</tr>
+<tr>
+<td>Node not on PATH</td>
+<td>No system Node/npm/bun; builds were verified with a Node 22 binary
+in <code>/tmp</code>.</td>
+<td>Procedures documented in <code>.freebuff/run.md</code>; run
+<code>npm install</code> locally to restore native binaries.</td>
+</tr>
+<tr>
+<td>Synthetic telemetry</td>
+<td>Seeded <code>seats</code>, prices and demo payments are generated
+data, and the dashboard charts derive from the demo/shim payment
+rows.</td>
+<td>Expected for demo data; replace via the admin panel or real
+registrations.</td>
+</tr>
+<tr>
+<td>External lookups</td>
+<td>States/cities API and Nominatim geocoding are free and keyless; a
+slow/offline network falls back to the bundled JSON.</td>
+<td>Degrades gracefully; swap to a keyed provider via <code>.env</code>
+if needed.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="suggested-next-steps">11. Suggested next steps</h2>
+<ol type="1">
+<li><strong>Fix <code>DB_PASS</code></strong> and seed MySQL so the demo
+data and the database agree.</li>
+<li><strong>Replace synthetic data with real events</strong> — the
+seeder reads <code>events.json</code>, so swapping that one file (or
+pointing it at a live query) is the whole migration.</li>
+<li><strong>Deploy the static demo</strong> (GitHub Pages/Vercel) so it
+is shareable without a local server.</li>
+<li><strong>Add dataset regression tests</strong> so the per-city
+coverage rules can’t silently break.</li>
+<li><strong>Location-aware dashboard</strong> — highlight “events near
+you” and support saved favourite cities.</li>
+</ol>
+<hr />
+<p><em>Report generated from a live inspection of the working tree:
+dataset statistics, validation output, typecheck, test run and browser
+verification on September 24, 2026.</em></p>
+</body>
+</html>

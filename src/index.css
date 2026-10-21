@@ -347,6 +347,33 @@ All colors MUST be HSL.
 @keyframes spin { to { transform: rotate(360deg); } }
 .auth-spinner { animation: spin 0.75s linear infinite; }
 
+/* ── Shared utilities ─────────────────────────────────────── */
+@layer utilities {
+  .gradient-text {
+    background: linear-gradient(135deg, hsl(243 75% 62%), hsl(280 70% 66%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .bg-gradient-primary {
+    background-image: var(--gradient-primary);
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 9999px;
+  }
+}
+
 /* Footer link */
 .auth-switch {
   margin-top: 1.4rem;

@@ -1,0 +1,137 @@
+/* Eventra Upgrade Report — print styles */
+@page {
+  size: A4;
+  margin: 16mm 15mm 18mm;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.55;
+  color: #1e2233;
+  margin: 0;
+}
+
+header#title-block-header h1.title {
+  font-size: 24pt;
+  line-height: 1.2;
+  margin: 0 0 6pt;
+  padding-bottom: 10pt;
+  border-bottom: 3px solid #6366f1;
+  color: #111;
+}
+
+h1 {
+  font-size: 16pt;
+  color: #312e81;
+  margin: 20pt 0 8pt;
+  padding-bottom: 4pt;
+  border-bottom: 1px solid #d9dcf0;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+h2 {
+  font-size: 13pt;
+  color: #4338ca;
+  margin: 16pt 0 6pt;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+h3 {
+  font-size: 11.5pt;
+  color: #1f2937;
+  margin: 12pt 0 4pt;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+p { margin: 5pt 0; }
+
+strong { color: #0f172a; }
+
+a { color: #4f46e5; text-decoration: none; }
+
+ul, ol { margin: 5pt 0 8pt; padding-left: 18pt; }
+li { margin: 2.5pt 0; }
+
+code {
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  font-size: 8.6pt;
+  background: #f1f2fb;
+  border: 1px solid #e4e6f5;
+  border-radius: 3px;
+  padding: 0.5pt 3pt;
+  color: #4338ca;
+}
+
+pre {
+  background: #f6f7fd;
+  border: 1px solid #e4e6f5;
+  border-left: 3px solid #6366f1;
+  border-radius: 5px;
+  padding: 7pt 9pt;
+  overflow-x: hidden;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  margin: 7pt 0;
+}
+
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #334155;
+  font-size: 8.4pt;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 9.2pt;
+  margin: 8pt 0 10pt;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+th {
+  background: #eef0fb;
+  color: #312e81;
+  text-align: left;
+  font-weight: 600;
+}
+
+th, td {
+  border: 1px solid #d9dcf0;
+  padding: 4pt 7pt;
+  vertical-align: top;
+}
+
+tbody tr:nth-child(even) td { background: #fafbff; }
+
+blockquote {
+  margin: 8pt 0;
+  padding: 7pt 11pt;
+  border-left: 3px solid #f59e0b;
+  background: #fffbeb;
+  border-radius: 0 5px 5px 0;
+  color: #713f12;
+}
+
+blockquote p { margin: 2pt 0; }
+
+hr {
+  border: none;
+  border-top: 1px solid #d9dcf0;
+  margin: 14pt 0;
+}

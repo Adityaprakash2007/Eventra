@@ -2,12 +2,15 @@ import { Router } from "express";
 import { literal } from "sequelize";
 import { Event, User, Registration, Payment } from "../models/index.js";
 import { asyncHandler } from "../middleware/errorHandler.js";
+import { requireAuth, requireAdmin } from "../middleware/auth.js";
 
 const router = Router();
 
-// GET /api/stats — dashboard summary stats
+// GET /api/stats — dashboard summary stats (admin only)
 router.get(
   "/",
+  requireAuth,
+  requireAdmin,
   asyncHandler(async (_req, res) => {
     const [totalUsers, totalEvents, totalRegistrations, revenueResult] = await Promise.all([
       User.count(),
@@ -25,9 +28,11 @@ router.get(
   })
 );
 
-// GET /api/stats/registrations-per-event — chart data
+// GET /api/stats/registrations-per-event — chart data (admin only)
 router.get(
   "/registrations-per-event",
+  requireAuth,
+  requireAdmin,
   asyncHandler(async (_req, res) => {
     const events = await Event.findAll({
       attributes: [

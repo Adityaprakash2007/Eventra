@@ -29,6 +29,34 @@ const User = sequelize.define("user", {
     allowNull: true,
     defaultValue: DataTypes.NOW,
   },
+  // ── Profile page (Phase 4) ──────────────────────────────────
+  phone: {
+    type: DataTypes.STRING(30),
+    allowNull: true,
+  },
+  bio: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+  // Deterministic avatar tint assigned at signup
+  avatar_color: {
+    type: DataTypes.STRING(20),
+    allowNull: true,
+  },
+  // Comma-separated interest categories for recommendations
+  interests: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+  // Home location used by recommendations + distance to venues
+  state: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+  },
+  city: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+  },
 });
 
 export default User;
